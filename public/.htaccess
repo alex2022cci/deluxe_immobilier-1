@@ -1,0 +1,18 @@
+<IfModule mod_rewrite.c>
+
+    <IfModule mod_negocitation.c>
+        #Pour proteger nos repertoires
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    #Pour activer la réécriture des url
+    RewriteEngine On
+
+    #Réécriture des URL de dossier et fichier
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+
+    # Condition qui permet de lire l'index.php #L pertmet de stopper la condition
+    RewriteRule ^ index.php [L]
+
+</IfModule>
