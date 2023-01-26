@@ -168,8 +168,9 @@ function view($dir, $vars = [])
     return $routes;
  }
  
- function routes($name, $params = [] )
+ function route($name, $params = [] )
  {
+   
     // Pour aller chercher les parametres apres le nom de domaine (ce qui est après le ? )
     if(!is_array($params))
     {
