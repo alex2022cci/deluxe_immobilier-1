@@ -6,14 +6,16 @@ trait HasViewLoader
 {
     private $viewNameArray = [];
     
-    private function viewLoader()
+    private function viewLoader($dir)
     {
         $dir = trim($dir, '.');
         $dir = str_replace(".", "/", $dir);
-        if(file_exists(dirname(dirname(__DIR__))."/ressources/view/$dir.blade.php"))
+         
+        
+        if(file_exists(dirname(dirname(dirname(__DIR__)))."/resources/view/$dir.blade.php"))
         {
             $this->registerView($dir);
-            $content = htmlentities(file_get_contents(dirname(dirname(dirname(__DIR__)))."/ressources/view/$dir.blade.php"));
+            $content = htmlentities(file_get_contents(dirname(dirname(dirname(__DIR__)))."/resources/view/$dir.blade.php"));
             return $content;
         }
         else

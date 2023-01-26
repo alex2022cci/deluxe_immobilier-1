@@ -46,7 +46,7 @@ trait HasExtendsContent
         $string = $this->content;
         
         // on va initialiser 
-        $startWord = '@section('" . $yieldName ."')';
+        $startWord = '@section("' . $yieldName .'")';
         $endWord = '@endsection';
 
         $startPos = strpos($string, $startWord);

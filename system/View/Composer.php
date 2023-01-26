@@ -17,7 +17,7 @@
         {
             $this->registeredViewArray[$name] = $callback;
         }
-        private function setViewArray()
+        private function setViewArray($viewArray)
         {
             $this->viewArray = $viewArray;
         }
@@ -46,11 +46,11 @@
                 case "View" :
                     return  call_user_func_array(array($instance, "registeredView"), $arguments);
                     break;
-                case "setView" :
+                case "setViews" :
                     return  call_user_func_array(array($instance, "setViewArray"), $arguments);
                     break;
                 case "getVars" :
-                    return  call_user_func_array(array($instance, "setViewVars"), $arguments);
+                    return  call_user_func_array(array($instance, "getViewVars"), $arguments);
                     break;
             }
         }

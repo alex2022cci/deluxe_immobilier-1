@@ -8,6 +8,7 @@ use System\View\Traits\HasIncludeContent;
 
 class viewBuilder
 {
+    
     use HasViewLoader, HasExtendsContent, HasIncludeContent;
 
     public $content;

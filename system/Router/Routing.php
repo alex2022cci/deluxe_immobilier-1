@@ -29,7 +29,7 @@ class Routing{
 
       $classPath = str_replace('\\', '/', $match["class"]);
       $path = Config::get('app.BASE_DIR') . "/App/Http/Controllers/".$classPath.".php";
-      echo $path;
+      // echo $path;
       if(!file_exists($path)){
         $this->error404();
       }

@@ -16,7 +16,7 @@
             // Pour eviter les warning
             global $routes;
 
-            // Je vais ajouter ma nouvelle route
+            //Je vais ajouter dans mon tableau la route qu'il doit prendre
             array_push($routes['get'], array(
                 'url' => trim($url, "/ "),
                 'class' => $class,

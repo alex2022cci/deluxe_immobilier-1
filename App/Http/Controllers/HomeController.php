@@ -12,6 +12,6 @@ class HomeController
         $slides = Slide::all();
 
         // On valler faire un retour dans notre vue
-        return view('app.index0', compact('slides'));
+        return view('app.index', compact('slides'));
     }
 }

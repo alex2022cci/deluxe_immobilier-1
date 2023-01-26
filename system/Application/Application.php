@@ -16,7 +16,7 @@
         // Ecrire une fonction privé qui ne seront pas disponible pour le public
         private function loadProviders()
         {
-            // // Configuration du lancement du site
+            // Configuration du lancement du site
             // $appConfigs = require dirname(dirname(__DIR__)) . "/config/app.php";
             // $providers = $appConfigs['providers'];
             // foreach ($providers as $provider)
@@ -29,7 +29,14 @@
         // Generer nos routes
         private function loadHelpers()
         {
+            // Permet de faire de l'affichage en HTML
+            require_once(dirname(__DIR__) . '/helpers/helpers.php');
 
+            // Pour trouver le fichier
+            if(file_exists(dirname(dirname(__DIR__)) . '/App/Http/helpers.php'))
+            {
+                require_once(dirname(__DIR__) . '/helpers/helpers.php');
+            }
         }
         // gestion des urls
         private function  registerRoutes()
@@ -56,3 +63,5 @@
 
         }
     }
+
+    
