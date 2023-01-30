@@ -19,5 +19,6 @@
     // Je créer mes url pour mes categories admins ( GET / POST / DELETE / PUT)
 
 
-    // Je créer mes url pour le systeme d'authentification
-
+        // Je créer mes url pour le systeme d'authentification
+    Route::get('/login', "Auth_\LoginController@view", "auth.login.view");
+    Route::post('/login', "Auth_\LoginController@login", "auth.login");

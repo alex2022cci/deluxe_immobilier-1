@@ -6,7 +6,6 @@ function sidebarActive($url, $contain = true){
     else
     return  $url === currentUrl() ? 'active' : '';
 }
-
 function errorClass($name)
 {
     return errorExists($name) ? 'is-invalid' : '';
@@ -15,7 +14,6 @@ function errorClass($name)
 function errorText($name)
 {
     return errorExists($name) ? '<div><small class="text-danger">' .error($name) . '</small></div>' : '';
-
 }
 
 function oldOrValue($name, $value)
