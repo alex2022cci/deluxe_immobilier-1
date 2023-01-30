@@ -4,6 +4,9 @@
 
     // Je vais créer toutes les url du front office
     Route::get('/', 'HomeController@index', 'home.index');
+    Route::get('/search', 'HomeController@search', 'home.search');
+    Route::get('/ads/{id}', 'HomeController@ads', 'home.ads');
+
 
     // Je créer tout mes appels ajax
     

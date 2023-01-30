@@ -1,2 +1,3 @@
 <?php
-    new \System\Application\Application();
+    
+new \System\Application\Application();

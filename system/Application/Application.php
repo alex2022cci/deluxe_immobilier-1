@@ -17,13 +17,13 @@
         private function loadProviders()
         {
             // Configuration du lancement du site
-            // $appConfigs = require dirname(dirname(__DIR__)) . "/config/app.php";
-            // $providers = $appConfigs['providers'];
-            // foreach ($providers as $provider)
-            // {
-            //     $providerObject = new $provider();
-            //     $providerObject->boot();
-            // }
+             $appConfigs = require dirname(dirname(__DIR__)) . "/config/app.php";
+             $providers = $appConfigs['providers'];
+             foreach ($providers as $provider)
+             {
+                $providerObject = new $provider();
+                $providerObject->boot();
+             }
 
         }
         // Generer nos routes

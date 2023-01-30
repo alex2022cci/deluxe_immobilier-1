@@ -30,7 +30,7 @@
 
     <!-- Nous allons importer nos fichiers en Javascript -->
     @include('app.layouts.scripts')
-    @yield('scripts')
+    @yield('script')
 
 </body>
 

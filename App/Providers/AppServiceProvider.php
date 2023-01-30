@@ -33,7 +33,7 @@
                     "usersCount" => $usersCount,
                     "addCount" => count($ads),
                     "postsCount" => $postsCount
-                ];
+                ];                     
             });
         }
     }

@@ -10,9 +10,9 @@ trait HasIncludeContent
             $includesNamesArray = $this->findIncludesNames();
             if(!empty($includesNamesArray))
             {
-                foreach($includesNamesArray as $includeNAme)
+                foreach($includesNamesArray as $includeName)
                 {
-                    $this->initialIncludes($includeNAme);
+                    $this->initialIncludes($includeName);
                 }
             }
             else
@@ -24,13 +24,13 @@ trait HasIncludeContent
     private function findIncludesNames()
     {
         $includesNamesArray = [];
-        preg_match("/s*@includes+\('([^)]+)'\)/", $this->content, $includesNamesArray, PREG_UNMATCHED_AS_NULL);
-        return isset($includesNamesArray[1]) ? $includesNamesArray : false;
+        preg_match_all("/@include+\('([^)]+)'\)/", $this->content, $includesNamesArray, PREG_UNMATCHED_AS_NULL);
+        return isset($includesNamesArray[1]) ? $includesNamesArray[1] : false;
     }
 
-    private function initialIncludes($includeNAme)
+    private function initialIncludes($includeName)
     {
-        $this->content =  str_replace("@include('$includeName')", $this->viewloader($includeNAme), $this->content);
+        $this->content = str_replace("@include('$includeName')", $this->viewLoader($includeName), $this->content);
     }
 
 }

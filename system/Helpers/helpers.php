@@ -4,22 +4,23 @@ function dd($value, $die = true)
 {
     var_dump($value);
     if($die)
-    exit;
+    exit();
 }
 
 function view($dir, $vars = [])
 {
-    $viewBuilder =  new \System\View\viewBuilder();
+    $viewBuilder = new \System\View\ViewBuilder();
     $viewBuilder->run($dir);
     $viewVars = $viewBuilder->vars;
     $content = $viewBuilder->content;
+    
 
     // Pour extraire les varirables de la vue 
-    empty($viewVars)? :extract($viewVars);
-    empty($vars)? :extract($vars);
+    empty($viewVars) ? : extract($viewVars);
+    empty($vars) ? : extract($vars);
 
     // On va utiliser une fonction de php pour garder l'HTML et qui permet de lancer du code PHP
-    eval("?>".html_entity_decode($content));
+    eval(" ?> ".html_entity_decode($content));
  }
 
  function html($text)
@@ -153,19 +154,19 @@ function view($dir, $vars = [])
     global $routes;
 
     // On va mettre dans un tableau toutes nos routes
-    $allRoutes = array_merge($routes['get'], $routes['post'], $routes['put'], $routes['delete']);
+    $allRoutes = array_merge($routes['get'], $routes['post'], $routes['put'], ['delete']);
     
-    $routes = null;
+    $route = null;
     foreach($allRoutes as $element)
     {
         //On va mettre une condition de verification
         if($element['name'] == $name && $element['name'] !== null)
         {
-            $routes = $element['url'];
+            $route = $element['url'];
             break;
         }
     }
-    return $routes;
+    return $route;
  }
  
  function route($name, $params = [] )
@@ -177,8 +178,8 @@ function view($dir, $vars = [])
         // On va se mettre une exception
         throw new \Exception("Les parametres dans la route ne sont pas dans notre tableau");
     }
-    $routes = findRouteByName($name);
-    if($routes === null)
+    $route = findRouteByName($name);
+    if($route === null)
     {
         throw new \Exception("La route n'est pas trouvé : 404");
     }
@@ -186,7 +187,7 @@ function view($dir, $vars = [])
     $routesParamsMatch = [];
     
     // Pour aller check les parametres qui sont dans ma route
-    preg_match_all("/{[^}.]*}/", $routes, $routesParamsMatch);
+    preg_match_all("/{[^}.]*}/", $route, $routesParamsMatch);
 
     // On va aller verifiser si le nombre de parametre coincide avec les parametres url et attendu
     if(count($routesParamsMatch[0]) > count($params))
@@ -195,9 +196,9 @@ function view($dir, $vars = [])
     }
     foreach($routesParamsMatch[0] as $key => $routesMatch)
     {
-        $routes = str_replace($routesMatch, array_pop($params), $routes);
+        $route = str_replace($routesMatch, array_pop($params), $route);
     }
-    return currentDomain() . "/" . trim($routes, " /");
+    return currentDomain() . "/" . trim($route, " /");
  }
 
  function generateToken()

@@ -21,12 +21,26 @@ class HomeController
         $posts = Post::where('published_at', '<=', date('Y-m-d H:i:s'))->orderBy('created_at', 'desc')->limit(0, 4)->get();
         
         // Envoyer à la vue l'ensemble des données que j'ai dans ma variable $bestAds
-
-
-        
-        
         // On valler faire un retour dans notre vue
         return view('app.index', compact('slides','posts','bestAds', 'newestAds'));
+    }
+
+    public function search()
+    {
+        if(isset($_GET['search'])) 
+        {
+            $search = '%' . $_GET['search'] . '%';
+            $ads = Ads::where('title', 'like', $search)->whereOr('tag', 'like', $search)->get();
+            $posts = Post::where('title', 'like', $search)->get();
+
+            return view('app.search', compact('ads', 'posts'));
+        }
+        else
+        {
+            return back();
+        }
+
+
     }
     
     
