@@ -26,3 +26,7 @@
     Route::get('/register', "Auth\RegisterController@view", "auth.register.view");
     Route::post('/register', "Auth\RegisterController@register", "auth.register");
 
+
+    Route::get('/forgot', "Auth\ForgotController@view", "auth.forgot.password");
+    Route::post('/forgot', "Auth\ForgotController@forgot", "auth.forgot");
+
