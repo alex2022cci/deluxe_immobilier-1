@@ -12,7 +12,7 @@
                 <li class="nav-item <?= (currentUrl() == route('home.index')) ? 'active' : '' ?>"><a href="<?= route('home.index') ?>" class="nav-link">Home</a></li>
                 <li class="nav-item <?= (currentUrl() == route('home.all.ads')) ? 'active' : '' ?>"><a href="<?= route('home.all.ads') ?>" class="nav-link">Advertising</a></li>
                 <li class="nav-item <?= (currentUrl() == route('home.about')) ? 'active' : '' ?>"><a href="<?= route('home.about') ?>" class="nav-link">AboutUs</a></li>
-                <li class="nav-item <?= (currentUrl() == route('home.all.post')) ? 'active' : '' ?>""><a href="<?= route('home.all.post') ?>" class="nav-link">Blog</a></li>
+                <li class="nav-item <?= (currentUrl() == route('home.all.post')) ? 'active' : '' ?>"><a href="<?= route('home.all.post') ?>" class="nav-link">Blog</a></li>
                 <?php if(\System\Auth\Auth::checkLogin()) { ?>
                 <?php if(\System\Auth\Auth::user()->user_type == 'admin') { ?>
                     <li class="nav-item btn-dark"><a href="<?= route('admin.index') ?>" class="nav-link text-white"><span class="icon-user m-2"></span>Admin Panel</a></li>

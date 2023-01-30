@@ -6,7 +6,9 @@
     Route::get('/', 'HomeController@index', 'home.index');
     Route::get('/search', 'HomeController@search', 'home.search');
     Route::get('/ads/{id}', 'HomeController@ads', 'home.ads');
-
+    Route::get('/ads', 'HomeController@allAds', 'home.all.ads');
+    Route::get('/about', 'HomeController@about', 'home.about');
+    Route::get('/post', 'HomeController@allPost', 'home.all.post');
 
     // Je créer tout mes appels ajax
     

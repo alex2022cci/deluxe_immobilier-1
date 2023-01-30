@@ -8,39 +8,26 @@ use App\Slide;
 
 class HomeController
 {
-    public function index()
-    {
-        // On va aller chercher les slider dans la base de données
+    public function index(){
         $slides = Slide::all();
         $newestAds = Ads::orderBy('created_at', 'desc')->limit(0, 6)->get();
-
-        // Pour les avoirs les meilleurs bien immobilier
         $bestAds = Ads::orderBy('view', 'desc')->orderBy('created_at', 'desc')->limit(0, 4)->get();
-
-        // Pour afficher le blog dans la db
         $posts = Post::where('published_at', '<=', date('Y-m-d H:i:s'))->orderBy('created_at', 'desc')->limit(0, 4)->get();
-        
-        // Envoyer à la vue l'ensemble des données que j'ai dans ma variable $bestAds
-        // On valler faire un retour dans notre vue
-        return view('app.index', compact('slides','posts','bestAds', 'newestAds'));
+        return view('app.index', compact('posts', 'slides', 'newestAds', 'bestAds'));
     }
 
     public function search()
     {
-        if(isset($_GET['search'])) 
+        if(isset($_GET['search']))
         {
             $search = '%' . $_GET['search'] . '%';
-            $ads = Ads::where('title', 'like', $search)->whereOr('tag', 'like', $search)->get();
-            $posts = Post::where('title', 'like', $search)->get();
-
+            $ads = Ads::where('title', 'LIKE', $search)->whereOr('tag', 'LIKE', $search)->get();
+            $posts = Post::where('title', 'LIKE', $search)->get();
             return view('app.search', compact('ads', 'posts'));
         }
-        else
-        {
+        else{
             return back();
         }
-
-
     }
     
     

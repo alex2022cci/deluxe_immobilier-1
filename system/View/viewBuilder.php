@@ -2,14 +2,14 @@
 
 namespace System\View;
 
+
 use System\View\Traits\HasViewLoader;
 use System\View\Traits\HasExtendsContent;
 use System\View\Traits\HasIncludeContent;
 
-class viewBuilder
+class ViewBuilder
 {
-    
-    use HasViewLoader, HasExtendsContent, HasIncludeContent;
+    use HasViewLoader,HasExtendsContent,HasIncludeContent;
 
     public $content;
     public $vars = [];

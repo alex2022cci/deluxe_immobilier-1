@@ -1,4 +1,3 @@
-
 @extends('app.layouts.app')
 
 @section('head-tag')
@@ -291,9 +290,8 @@ Deluxe Real Property
 
 @endsection
 
-@section('scripts')
+@section('script')
 <script>
-
     $(window).on('load', function(){
         $.ajax({
             url : "<?= route('home.last.posts') ?>",
@@ -320,7 +318,5 @@ Deluxe Real Property
             }
         });
     });
-
-
 </script>
 @endsection

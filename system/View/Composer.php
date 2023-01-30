@@ -1,28 +1,33 @@
 <?php
 
-    namespace System\View;
+namespace System\View;
 
-    class Composer
+class Composer
+{
+    private static $instance;
+    private $vars = [];
+    private $viewArray = [];
+    private $registeredViewArray = [];
+
+    private function __construct()
     {
-        private static $instance;
-        private $vars = [];
-        private $viewArray = [];
-        private $registeredViewArray = [];
 
-        public function __construct()
-        {
+    }
 
-        }
-        private function registerView($name, $callback)
-        {
-            $this->registeredViewArray[$name] = $callback;
-        }
-        private function setViewArray($viewArray)
-        {
-            $this->viewArray = $viewArray;
-        }
-        private function getViewVars()
-        {
+    private function registerView($name, $callback)
+    {
+       
+        $this->registeredViewArray[$name] = $callback;
+
+    }
+
+     private function setViewArray($viewArray)
+    {
+        $this->viewArray = $viewArray;
+    }
+
+    private function getViewVars()
+    {
             foreach($this->viewArray as $viewName)
             {
                 if(isset($this->registeredViewArray[str_replace('/', '.', $viewName)]))
@@ -33,31 +38,32 @@
                     {
                         $this->vars[$key] = $value;
                     }
-
                 }
             }
             return $this->vars;
-        }
-        public  static function __callStatic($name, $arguments)
+    }
+
+    public static function __callStatic($name, $arguments)
+    {
+        $instance = self::getInstance();
+        switch($name)
         {
-            $instance = self::getInstance();
-            switch ($name)
-            {
-                case "View" :
-                    return  call_user_func_array(array($instance, "registeredView"), $arguments);
-                    break;
-                case "setViews" :
-                    return  call_user_func_array(array($instance, "setViewArray"), $arguments);
-                    break;
-                case "getVars" :
-                    return  call_user_func_array(array($instance, "getViewVars"), $arguments);
-                    break;
-            }
-        }
-        private static function getInstance()
-        {
-            if (empty(self::$instance))
-                self::$instance = new self;
-            return self::$instance;
+            case "view":
+                return call_user_func_array(array($instance, "registerView"), $arguments);
+            //break;
+            case "setViews":
+                return call_user_func_array(array($instance, "setViewArray"), $arguments);
+            //break;
+            case "getVars":
+                return call_user_func_array(array($instance, "getViewVars"), $arguments);
+            //break;
         }
     }
+
+    private static function getInstance()
+    {
+        if(empty(self::$instance))
+        self::$instance = new self;
+        return self::$instance;
+    }
+}

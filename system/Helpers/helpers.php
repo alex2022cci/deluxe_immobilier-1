@@ -1,7 +1,6 @@
-<?php 
+<?php
 
-function dd($value, $die = true)
-{
+function dd($value, $die = true){
     var_dump($value);
     if($die)
     exit();
@@ -9,236 +8,218 @@ function dd($value, $die = true)
 
 function view($dir, $vars = [])
 {
-    $viewBuilder = new \System\View\ViewBuilder();
+    $viewBuilder = new System\View\ViewBuilder();
     $viewBuilder->run($dir);
     $viewVars = $viewBuilder->vars;
     $content = $viewBuilder->content;
-    
-
-    // Pour extraire les varirables de la vue 
     empty($viewVars) ? : extract($viewVars);
     empty($vars) ? : extract($vars);
 
-    // On va utiliser une fonction de php pour garder l'HTML et qui permet de lancer du code PHP
     eval(" ?> ".html_entity_decode($content));
- }
+}
 
- function html($text)
- {
+function html($text)
+{
     return html_entity_decode($text);
- }
+}
 
- function old($name)
- {
-    // on va voir si notre session temporaire est sur true ou false
-    if(isset($_SESSION['temporary_old'][$name]))
-    {
-        return $_SESSION['temporary_old'][$name];
+function old($name)
+{
+    if(isset($_SESSION["temporary_old"][$name])){
+        return $_SESSION["temporary_old"][$name];
     }
-    else
-    {
+    else{
         return null;
     }
- }
+}
 
- function flashExist($name)
- {
-    // Pour afficher des données en cas d'erreur
-    return isset($_SESSION['temporary_flash'][$name]) === true ? true : false;
- }
-
- function allFlashes()
- {
-    if(isset($_SESSION['temporary_flash']))
-    {
-        $temporary = $_SESSION['temporary_flash'];
-        unset($_SESSION['temporary_flash']);
-        return $temporary;
-    }
-    else
-    {
-        return false;
-    }
- }
-
- function error($name, $message = null)
- {
+function flash($name, $message = null)
+{
     if(empty($message))
     {
-        if(isset($_SESSION['temporary_errorflash']))
-        {
-            $temporary = $_SESSION['temporary_errorflash'];
-            unset($_SESSION['temporary_errorflash']);
+        if (isset($_SESSION["temporary_flash"][$name])) {
+            $temporary = $_SESSION["temporary_flash"][$name];
+            unset($_SESSION["temporary_flash"][$name]);
             return $temporary;
         }
-        else
-        {
+        else{
             return false;
         }
+    }else{
+        $_SESSION["flash"][$name] = $message;
     }
-    else
-    {
-        $_SESSION['errorFlash'][$name] = $message;
-    }
- }
+}
 
- function errorExists($name = null)
- {
-    if($name === null)
-    {
-        // Compter le nombre d'erreur dans mon tableau
-        return isset($_SESSION['temporary_errorflash']) === true ? count($_SESSION['temporary_errorflash']) : false;
-    }
-    else
-    {
-        // Si tout est vrai ça me retourne vide
-        return isset($_SESSION['temporary_errorflash']) === true ? true : false;
-    }
- }
+function flashExists($name)
+{
+    return isset($_SESSION["temporary_flash"][$name]) === true ? true : false;
+}
 
- function allErrors()
- {
-    if(isset($_SESSION['temporary_errorflash']))
-    {
-        $temporary = $_SESSION['temporary_errorflash'];
-        unset($_SESSION['temporary_errorflash']);
+function allFlashes()
+{
+    if (isset($_SESSION["temporary_flash"])) {
+        $temporary = $_SESSION["temporary_flash"];
+        unset($_SESSION["temporary_flash"]);
         return $temporary;
     }
-    else
-    {
+    else{
         return false;
     }
- }
+}
 
- function currentDomain()
- {
-    $httpProtocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https://" : "http://";
+
+function error($name, $message = null)
+{
+    if(empty($message))
+    {
+        if (isset($_SESSION["temporary_errorFlash"][$name])) {
+            $temporary = $_SESSION["temporary_errorFlash"][$name];
+            unset($_SESSION["temporary_errorFlash"][$name]);
+            return $temporary;
+        }
+        else{
+            return false;
+        }
+    }else{
+        $_SESSION["errorFlash"][$name] = $message;
+    }
+}
+
+function errorExists($name = null)
+{
+  if($name === null)
+  {
+      return isset($_SESSION['temporary_errorFlash']) === true ? count($_SESSION['temporary_errorFlash']) : false;
+  }
+  else{
+    return isset($_SESSION['temporary_errorFlash'][$name]) === true ? true : false;
+  }
+}
+
+function allErrors()
+{
+    if (isset($_SESSION["temporary_errorFlash"])) {
+        $temporary = $_SESSION["temporary_errorFlash"];
+        unset($_SESSION["temporary_errorFlash"]);
+        return $temporary;
+    }
+    else{
+        return false;
+    }
+}
+
+
+function currentDomain()
+{
+    $httpProtocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === "on") ? "https://" : "http://";
     $currentUrl = $_SERVER['HTTP_HOST'];
-    
-    // Je dois retourner le protocole http ou https + le nom de domaine 
-    //Exemple https://localhost
-    return $httpProtocol . $currentUrl;
+    return $httpProtocol.$currentUrl;
+}
 
- }
-
- function redirect($url)
- {
+function redirect($url)
+{
     $url = trim($url, '/ ');
-    $url = strpos($url, currentDomain()) === 0 ? $url :currentDomain().'/'. $url;
-    header("Location: " . $url);
+    $url = strpos($url, currentDomain()) === 0 ?  $url : currentDomain() . '/' . $url;
+    header("Location: ".$url);
     exit;
- }
+}
 
- function back()
- {
-    // retourner à la page précédente
+function back()
+{
     $http_referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
     redirect($http_referer);
- }
+}
 
- function asset($src)
- {
-    //Cherche aller chercher nos sources tous nos fichiers et script
+function asset($src)
+{
     return currentDomain().("/".trim($src, "/ "));
- }
+}
 
- function url($url)
- {
-    // On va aller chercher nos url
+function url($url)
+{
     return currentDomain().("/".trim($url, "/ "));
- }
+}
 
- function findRouteByName($name)
- {
-    // Pour aller chercher les routes par le nom
+function findRouteByName($name)
+{
     global $routes;
-
-    // On va mettre dans un tableau toutes nos routes
-    $allRoutes = array_merge($routes['get'], $routes['post'], $routes['put'], ['delete']);
-    
+    $allRoutes = array_merge($routes['get'], $routes['post'], $routes['put'], $routes['delete']);
     $route = null;
     foreach($allRoutes as $element)
     {
-        //On va mettre une condition de verification
-        if($element['name'] == $name && $element['name'] !== null)
-        {
+        if($element['name'] == $name && $element['name'] !== null){
             $route = $element['url'];
-            break;
+              break;
         }
     }
     return $route;
- }
- 
- function route($name, $params = [] )
- {
-   
-    // Pour aller chercher les parametres apres le nom de domaine (ce qui est après le ? )
+}
+
+function route($name, $params = [])
+{
     if(!is_array($params))
     {
-        // On va se mettre une exception
-        throw new \Exception("Les parametres dans la route ne sont pas dans notre tableau");
+        throw new Exception('route params must be array!');
     }
+
     $route = findRouteByName($name);
     if($route === null)
     {
-        throw new \Exception("La route n'est pas trouvé : 404");
+        throw new Exception('route not found');
     }
     $params = array_reverse($params);
-    $routesParamsMatch = [];
-    
-    // Pour aller check les parametres qui sont dans ma route
-    preg_match_all("/{[^}.]*}/", $route, $routesParamsMatch);
-
-    // On va aller verifiser si le nombre de parametre coincide avec les parametres url et attendu
-    if(count($routesParamsMatch[0]) > count($params))
+    $routeParamsMatch = [];
+    preg_match_all("/{[^}.]*}/", $route, $routeParamsMatch);
+    if(count($routeParamsMatch[0]) > count($params))
     {
-        throw new \Exception("Les paramètres  ne sont pas bons");
+        throw new Exception('route params not enough!!');
     }
-    foreach($routesParamsMatch[0] as $key => $routesMatch)
+    foreach($routeParamsMatch[0] as $key => $routeMatch)
     {
-        $route = str_replace($routesMatch, array_pop($params), $route);
+        $route = str_replace($routeMatch, array_pop($params), $route);
     }
-    return currentDomain() . "/" . trim($route, " /");
- }
+    return currentDomain()."/".trim($route, " /");
+}
 
- function generateToken()
- {
+function generateToken()
+{
     return bin2hex(openssl_random_pseudo_bytes(32));
- }
+}
 
- function methodField()
- {
+function methodField()
+{
     $method_field = strtolower($_SERVER['REQUEST_METHOD']);
-
-    if($method_field == 'post'){
-
-        if(isset($_POST['_method'])){
-
-            if($_POST['_method'] == 'put'){
+    if($method_field == 'post')
+    {
+        if(isset($_POST['_method']))
+        {
+            if($_POST['_method'] == 'put')
+            {
                 $method_field = 'put';
             }
-            elseif($_POST['_method'] == 'delete'){
+            elseif($_POST['_method'] == 'delete')
+            {
                 $method_field = 'delete';
             }
         }
-
     }
     return $method_field;
- }
+}
 
- function array_dot($array, $return_array = [], $return_key = [])
- {
-    if(is_array($value))
-    {
-        $return_array = array_merge($return_array,
-                        array_dot($value, $return_array, $return_key . $key . '.'));
-    }
-    else{
-        $return_array[$return_key . $key] = $value;
-    }
- }
 
- function currentUrl()
- {
+function array_dot($array, $return_array = array(), $return_key = '') {
+    foreach ($array as $key => $value) {
+        if (is_array($value)) {
+            $return_array = array_merge($return_array, array_dot($value, $return_array, $return_key . $key . '.'));
+        } else {
+            $return_array[$return_key . $key] = $value;
+        }
+    }
+    return $return_array;
+}
+
+
+function currentUrl()
+{
     return currentDomain() . $_SERVER['REQUEST_URI'];
- }
+}

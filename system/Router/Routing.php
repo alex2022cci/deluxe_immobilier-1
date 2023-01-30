@@ -22,14 +22,12 @@ class Routing{
 
     public function run(){
       $match = $this->match();
-      // var_dump($match) ;
       if(empty($match)){
         $this->error404();
       }
 
       $classPath = str_replace('\\', '/', $match["class"]);
-      $path = Config::get('app.BASE_DIR') . "/App/Http/Controllers/".$classPath.".php";
-      // echo $path;
+      $path = Config::get('app.BASE_DIR') . "/app/Http/Controllers/".$classPath.".php";
       if(!file_exists($path)){
         $this->error404();
       }
