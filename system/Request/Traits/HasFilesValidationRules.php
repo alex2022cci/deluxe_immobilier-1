@@ -2,9 +2,6 @@
 
 namespace system\Request\Traits;
 
-/**
- * 
- */
 trait HasFilesValidationRules
 {
     //fonction qui permet de refuser les tailles maximum 

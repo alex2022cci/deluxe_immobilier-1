@@ -2,6 +2,8 @@
 
 namespace system\Request;
 
+use system\Request\Traits\HasRunValidations;
+use system\Request\Traits\HasValidationRules;
 use system\Request\Traits\HasFilesValidationRules;
 
 class Request 
@@ -11,7 +13,7 @@ class Request
     protected $errorExist = false;
     protected $request;
     protected $files = null;
-    protected $errorVaribleName = [];
+    protected $errorVariblesName = [];
 
     public function __construct()
     {
